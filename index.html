@@ -1,26 +1,31 @@
 <html>
+
+
+<body>
+
+    <input id="title" type="text" placeholder="Title"><br></br>
+    <input id="des"   type="text" placeholder="Discription"><br></br>
+    
+    <div id="container">
+
+    </div>
+    
     <script>
-        let globalId=1;
-        function markAsDone(todoid){
-             const parent=document.getElementById(todoid);
-             parent.children[2].innerHTML="DONE !";
-        }
-       function createChiled(title,des,id){
+       function createChiled(title,description,id){
                  const chiled=document.createElement("div");
                  const firstgrandparent=document.createElement("div")
                  firstgrandparent.innerHTML=title;
                  const secondgrandparent=document.createElement("div");
-                 secondgrandparent.innerHTML=des;
+                 secondgrandparent.innerHTML=description;
                  const thirdGrandparent=document.createElement("button");
                  thirdGrandparent.innerHTML="mark AS Done";
-                 thirdGrandparent.setAttribute("onclick",`markAsDone(${id})`)
-                 
+                 thirdGrandparent.setAttribute("onclick",`markAsDone(${id})`)  
                  chiled.appendChild(firstgrandparent);
                  chiled.appendChild(secondgrandparent);
                  chiled.appendChild(thirdGrandparent);
                  chiled.setAttribute("id",id);
                  return chiled
-
+ 
 
                 /*<>
                     <>xxxxxxx<>
@@ -33,23 +38,22 @@
 
 
 
-        function addTodo(){
-            const title=document.getElementById("title").value;
-            const des=document.getElementById("des").value;
-         
-            const outerDiv=document.getElementById("container");
-            outerDiv.appendChild(createChiled(title,des,globalId++));
-        
-            
+        function updateDomAccToState(state){
+            const parent=document.getElementById("container");
+            parent.innerHTML="";
+            for(let i=0;i<state.length;i++){
+               const child=createChiled(state[i].title,state[i].description,state[i].id);
+               parent.appendChild(child);
+            }
         }
-    </script>   
-    <body>
-
-        <input id="title" type="text" placeholder="Title"><br></br>
-        <input id="des"   type="text" placeholder="Discription"><br></br>
-        <button onclick="addTodo()">ADD TODO</button>
-        <div id="container"></div>
+        window.setInterval(async function(){
+            const res =await fetch("https://sum-server.100xdevs.com/todos")
+            const json=await res.json();
+            updateDomAccToState(json.todos)
+        },6000)
+           
         
-    </body>
+    </script>   
+  </body>
     
 </html>
