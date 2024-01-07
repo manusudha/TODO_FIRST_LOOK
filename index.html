@@ -1,22 +1,55 @@
 <html>
     <script>
+        let globalId=1;
+        function markAsDone(todoid){
+             const parent=document.getElementById(todoid);
+             parent.children[2].innerHTML="DONE !";
+        }
+       function createChiled(title,des,id){
+                 const chiled=document.createElement("div");
+                 const firstgrandparent=document.createElement("div")
+                 firstgrandparent.innerHTML=title;
+                 const secondgrandparent=document.createElement("div");
+                 secondgrandparent.innerHTML=des;
+                 const thirdGrandparent=document.createElement("button");
+                 thirdGrandparent.innerHTML="mark AS Done";
+                 thirdGrandparent.setAttribute("onclick",`markAsDone(${id})`)
+                 
+                 chiled.appendChild(firstgrandparent);
+                 chiled.appendChild(secondgrandparent);
+                 chiled.appendChild(thirdGrandparent);
+                 chiled.setAttribute("id",id);
+                 return chiled
+
+
+                /*<>
+                    <>xxxxxxx<>
+                    <>xxxxxxx<>
+                    <>xxxxxxx<>
+                 <>
+                */
+
+       }
+
+
+
         function addTodo(){
             const title=document.getElementById("title").value;
             const des=document.getElementById("des").value;
-            const original =document.getElementById("container").innerHTML;
-            document.getElementById("container").innerHTML= original+`<div>
-                                                                <div>${title}</div>
-                                                                <div>${des}</div>
-                                                                <div><button>mark as done</button></div>                
-                                                           </div> `
+         
+            const outerDiv=document.getElementById("container");
+            outerDiv.appendChild(createChiled(title,des,globalId++));
+        
+            
         }
-    </script>
+    </script>   
     <body>
-     <div>
+
         <input id="title" type="text" placeholder="Title"><br></br>
         <input id="des"   type="text" placeholder="Discription"><br></br>
         <button onclick="addTodo()">ADD TODO</button>
         <div id="container"></div>
+        
     </body>
     
 </html>
